@@ -1,0 +1,123 @@
+
+import java.util.HashSet;
+
+public class Test {
+    static void convert(String s)
+    {
+        HashSet<String> hs=new HashSet();
+        hs.add("break"); hs.add("case"); hs.add("char"); hs.add("const"); 
+        hs.add("continue"); hs.add("default"); hs.add("do"); hs.add("else"); 
+        hs.add("enum"); hs.add("extern"); hs.add("float"); hs.add("for");
+        hs.add("goto"); hs.add("if"); hs.add("long"); hs.add("register");
+        hs.add("return"); hs.add("short"); hs.add("signed"); hs.add("sizeof");
+        hs.add("static"); hs.add("switch"); hs.add("typeof"); hs.add("union");
+        hs.add("unsigned"); hs.add("void"); hs.add("volatile"); hs.add("while");
+        hs.add("auto"); hs.add("double"); hs.add("int"); hs.add("struct"); hs.add("printf");
+        String key="";
+        int l=s.length();
+        int i;
+        for(i=0;((int)s.charAt(i)>=48 && (int)s.charAt(i)<=57) || ((int)s.charAt(i)>=65 && (int)s.charAt(i)<=90) ||((int)s.charAt(i)>=97 && (int)s.charAt(i)<=122) ;i++)
+        {
+            key=key+s.charAt(i);
+        }
+        if(hs.contains(key))
+        {
+            key=key+'_';
+            switch(key)
+            {
+                case "int_":
+                {
+                   i++;
+                   String var="";
+                   while(s.charAt(i)!=';')
+                   {
+                       var=var+s.charAt(i++);
+                   }
+                   System.out.println("define "+var);
+                   break;
+                }
+                case "printf_":
+                {
+                    while(s.charAt(l-2)!='"')
+                    {
+                        l--;
+                    }
+                    String var="";
+                    System.out.print("print ");
+                    while(s.charAt(l)!=')')
+                    {
+                        if(((int)s.charAt(l)>=48 && (int)s.charAt(l)<=57) || ((int)s.charAt(l)>=65 && (int)s.charAt(l)<=90) ||((int)s.charAt(l)>=97 && (int)s.charAt(l)<=122))
+                        {
+                            var+=s.charAt(l++);
+                        }
+                        else
+                        {
+                            System.out.print(var+",");
+                            var="";
+                            l++;
+                        }
+                    }
+                    System.out.print(var);
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+                case "while_":
+                {
+                    int temp=0;
+                    while(s.charAt(temp)!='(')
+                    {
+                        temp++;
+                    }
+                    temp++;
+                    String s2="";
+                    while(s.charAt(temp)!=')')
+                    {
+                        s2+=s.charAt(temp);
+                        temp++;
+                    }
+                    System.out.println("repeat until "+s2);
+                    break;
+                }
+            }
+        }
+        else
+            {
+                if(s.contains(" = "))
+                {
+                    int j=0;
+                    String var="";
+                    while(s.charAt(j)!=' ')
+                    {
+                        var+=s.charAt(j++);
+                    }
+                    j=s.length()-1;
+                    while(s.charAt(j-1)!=' ')
+                    {
+                        j--;
+                    }
+                    String var2="";
+                    while(j<s.length()-1)
+                    {
+                        var2+=s.charAt(j++);
+                    }
+                    System.out.println("asign "+var2+" to "+var);
+                }
+            }
+    }
+    public static void main(String[] args)
+    {
+        String[] arr=new String[8];
+        arr[0]="while(n<10)";
+        arr[1]="{";
+        arr[2]="//some code here";
+        arr[3]="}";
+        for(int i=0;i<3;i++)
+        {
+            convert(arr[i]);
+        }
+    }
+}
+
