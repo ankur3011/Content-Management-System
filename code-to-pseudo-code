@@ -1,10 +1,12 @@
-
-import java.util.HashSet;
+import java.io.*;
+import java.util.*;
 
 public class Test {
     static void convert(String s)
     {
         HashSet<String> hs=new HashSet();
+        
+        //adds all the first_wordwords of C to hashset
         hs.add("break"); hs.add("case"); hs.add("char"); hs.add("const"); 
         hs.add("continue"); hs.add("default"); hs.add("do"); hs.add("else"); 
         hs.add("enum"); hs.add("extern"); hs.add("float"); hs.add("for");
@@ -13,18 +15,43 @@ public class Test {
         hs.add("static"); hs.add("switch"); hs.add("typeof"); hs.add("union");
         hs.add("unsigned"); hs.add("void"); hs.add("volatile"); hs.add("while");
         hs.add("auto"); hs.add("double"); hs.add("int"); hs.add("struct"); hs.add("printf");
-        String key="";
+        
+        //extracts the first word of the line and stores to the variable "first_word"
+        String first_word="";
         int l=s.length();
         int i;
         for(i=0;((int)s.charAt(i)>=48 && (int)s.charAt(i)<=57) || ((int)s.charAt(i)>=65 && (int)s.charAt(i)<=90) ||((int)s.charAt(i)>=97 && (int)s.charAt(i)<=122) ;i++)
         {
-            key=key+s.charAt(i);
+            first_word=first_word+s.charAt(i);
         }
-        if(hs.contains(key))
+        
+        //if the first word of the line is any one of the keywords
+        if(hs.contains(first_word))
         {
-            key=key+'_';
-            switch(key)
+            first_word=first_word+'_';
+            if(first_word=="-include")
             {
+                return;
+            }
+            switch(first_word)
+            {
+                case "for_":
+                {
+                    while(s.charAt(i)!=';')
+                    {
+                        i++;
+                    }
+                    i++;
+                    String var="";
+                    while(s.charAt(i)!=';')
+                    {
+                        var=var+s.charAt(i);
+                        i++;
+                    }
+                    System.out.println("repeat until "+var);
+                    break;
+                }
+                
                 case "int_":
                 {
                    i++;
@@ -57,7 +84,7 @@ public class Test {
                             l++;
                         }
                     }
-                    System.out.print(var);
+                    System.out.println(var);
                     break;
                 }
                 default:
@@ -83,6 +110,7 @@ public class Test {
                 }
             }
         }
+        //if the first word of the line not the keyword
         else
             {
                 if(s.contains(" = "))
@@ -107,17 +135,15 @@ public class Test {
                 }
             }
     }
-    public static void main(String[] args)
+    public static void main(String[] args) throws FileNotFoundException, IOException
     {
-        String[] arr=new String[8];
-        arr[0]="while(n<10)";
-        arr[1]="{";
-        arr[2]="//some code here";
-        arr[3]="}";
-        for(int i=0;i<3;i++)
+        FileReader fileReader = new FileReader(new File("c_code.txt"));
+        BufferedReader br = new BufferedReader(fileReader);
+        String line = null;
+        while ((line = br.readLine()) != null)
         {
-            convert(arr[i]);
+            convert(line);
+            //System.out.println(line);
         }
     }
 }
-
